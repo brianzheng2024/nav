@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装后端依赖
-RUN npm ci --only=production
+RUN npm install --production
 
 # 复制后端应用代码
 COPY . .
@@ -16,7 +16,7 @@ COPY . .
 # 安装客户端依赖并构建
 WORKDIR /app/client
 COPY client/package*.json ./
-RUN npm ci
+RUN npm install
 RUN npm run build
 
 # 返回主目录
