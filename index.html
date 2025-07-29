@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full dark:marksforest-bg-gray-900 bg-white">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MarksForest</title>
+    <meta
+      name="keywords"
+      content="MarksForest, Bookmarks, Link Management, Export Bookmarks, Website Bookmarks"
+    />
+    <meta
+      name="description"
+      content="MarksForest is a powerful tool that helps you manage and export your browser bookmarks, converting them into an aesthetically pleasing website that is easy to share and access."
+    />
+    <meta name="author" content="MarksForest" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon/favicon-16x16.png"
+    />
+    <link
+      rel="mask-icon"
+      href="assets/favicon/favicon-32x32.png"
+      color="#0b0b0f"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/scrollbar.css" />
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://marksforest.cloudnative.love",
+        "name": "MarksForest",
+        "description": "Managing and Exporting your Bookmarks into a Website",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://marksforest.cloudnative.love/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    <style>
+      @keyframes highlight-border {
+        0%,
+        100% {
+          box-shadow: 0 0 0 2px transparent;
+          transform: scale(1);
+        }
+        50% {
+          box-shadow: 0 0 0 2px rgb(34, 197, 94);
+          transform: scale(1.02);
+        }
+      }
+      .highlight-border {
+        animation: highlight-border 0.7s ease-in-out 3;
+      }
+    </style>
+  </head>
+
+  <body class="h-full dark:marksforest-bg-gray-900 bg-white">
+    <div>
+      <!-- Mobile Off-Canvas Menu -->
+      <div id="off-canvas-menu" class="fixed inset-0 z-[100] lg:hidden hidden">
+        <!-- Background backdrop -->
+        <div
+          id="off-canvas-backdrop"
+          class="fixed inset-0 transition-opacity duration-300 ease-in-out opacity-0 bg-transparent"
+        ></div>
+
+        <!-- Sidebar container -->
+        <div
+          id="off-canvas-content"
+          class="fixed inset-y-0 left-0 z-[101] w-72 bg-white dark:marksforest-bg-gray-900 shadow-lg transform transition-transform duration-300 ease-in-out -translate-x-full overflow-y-auto"
+        >
+          <div class="h-full flex flex-col">
+            <!-- Sidebar header -->
+            <div
+              class="flex h-16 shrink-0 items-center justify-between px-4 border-b border-gray-200 dark:marksforest-border-gray-800"
+            >
+              <div class="flex items-center">
+                <img
+                  class="h-8 w-auto"
+                  src="assets/logo.svg"
+                  alt="MarksForest"
+                />
+                <span
+                  class="ml-3 font-extrabold text-xl text-gray-900 dark:text-white"
+                  >MarksForest</span
+                >
+              </div>
+              <button
+                id="close-sidebar-button"
+                class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <svg
+                  class="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Sidebar content -->
+            <nav
+              id="mobile-navigation"
+              class="flex-1 px-2 py-4 space-y-1 overflow-y-auto bg-white dark:marksforest-bg-gray-900"
+            >
+              <!-- Navigation items will be rendered here -->
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Static Sidebar for Desktop -->
+      <div
+        class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-60 lg:flex-col"
+      >
+        <div
+          class="flex flex-col border-r border-gray-200 dark:marksforest-border-gray-800 bg-white px-4 h-full font-semibold dark:marksforest-bg-gray-900"
+        >
+          <div class="flex p-0 h-16 shrink-0 items-center">
+            <img
+              class="pl-2 h-8 w-auto"
+              src="assets/logo.svg"
+              alt="MarksForest"
+            />
+            <a href="" class="ml-4 font-extrabold text-2xl dark:text-white"
+              >MarksForest</a
+            >
+          </div>
+          <div
+            class="flex flex-1 flex-col overflow-y-auto no-scrollbar p-1 cursor-pointer"
+          >
+            <div id="sidebar" class="flex flex-1 flex-col">
+              <ul id="navigation" class="space-y-1">
+                <!-- Navigation items will be inserted here -->
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- Resize Handle -->
+        <div
+          id="resize-handle"
+          class="absolute right-0 top-0 bottom-0 w-2 translate-x-1/2 cursor-col-resize z-100 hover:bg-black/10 dark:hover:bg-white/10"
+        ></div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div
+        class="lg:pl-60 dark:marksforest-bg-gray-900 flex flex-col min-h-screen"
+      >
+        <div
+          class="items-center justify-between sticky top-0 z-40 flex h-16 shrink-0 gap-x-4 border-b border-gray-200 dark:marksforest-border-gray-800 bg-white dark:marksforest-bg-gray-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8"
+        >
+          <div
+            class="h-full items-center flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-between"
+          >
+            <div class="flex lg:grow gap-x-4 justify-between items-center">
+              <div class="flex lg:hidden">
+                <!-- Mobile menu button -->
+                <button
+                  type="button"
+                  id="open-sidebar-button"
+                  class="inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-200"
+                >
+                  <span class="sr-only">Open main menu</span>
+                  <svg
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <img
+                class="h-8 w-auto lg:hidden"
+                src="assets/logo.svg"
+                alt="MarksForest"
+              />
+              <div
+                class="hidden lg:block relative w-full h-full items-center justify-between"
+              >
+                <button
+                  id="searchButton"
+                  class="absolute h-full text-gray-400 rounded cursor-pointer w-8 flex items-center"
+                >
+                  <svg
+                    class="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+                <input
+                  id="searchInput"
+                  type="search"
+                  class="text-sm text-gray-900 dark:text-gray-400 pl-8 w-full h-full border-0 focus:outline-none focus:ring-0 dark:marksforest-bg-gray-900"
+                  placeholder="Search..."
+                />
+              </div>
+            </div>
+            <a
+              href=""
+              class="lg:hidden ml-4 font-extrabold text-2xl dark:text-white"
+              >MarksForest</a
+            >
+            <div class="relative">
+              <button
+                id="themeToggleButton"
+                type="button"
+                aria-label="Switch theme"
+                class="group rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition dark:marksforest-bg-gray-900 dark:ring-white/10 dark:hover:ring-white/20"
+              >
+                <svg
+                  id="sunIcon"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden [@media(prefers-color-scheme:dark)]:fill-teal-50 [@media(prefers-color-scheme:dark)]:stroke-teal-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-teal-600"
+                >
+                  <path
+                    d="M8 12.25A4.25 4.25 0 0 1 12.25 8v0a4.25 4.25 0 0 1 4.25 4.25v0a4.25 4.25 0 0 1-4.25 4.25v0A4.25 4.25 0 0 1 8 12.25v0Z"
+                  ></path>
+                  <path
+                    d="M12.25 3v1.5M21.5 12.25H20M18.791 18.791l-1.06-1.06M18.791 5.709l-1.06 1.06M12.25 20v1.5M4.5 12.25H3M6.77 6.77 5.709 5.709M6.77 17.73l-1.061 1.061"
+                    fill="none"
+                  ></path>
+                </svg>
+                <svg
+                  id="moonIcon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  class="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-zinc-400 [@media_not_(prefers-color-scheme:dark)]:fill-teal-400/10 [@media_not_(prefers-color-scheme:dark)]:stroke-teal-500"
+                >
+                  <path
+                    d="M17.25 16.22a6.937 6.937 0 0 1-9.47-9.47 7.451 7.451 0 1 0 9.47 9.47ZM12.75 7C17 7 17 2.75 17 2.75S17 7 21.25 7C17 7 17 11.25 17 11.25S17 7 12.75 7Z"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main content area -->
+        <main class="mt-4 dark:marksforest-bg-gray-900 flex-grow">
+          <div
+            id="loading-spinner"
+            class="flex justify-center items-center h-full"
+          >
+            <div
+              class="loader ease-linear rounded-full border-2 border-t-2 border-gray-400 h-6 w-6"
+            ></div>
+          </div>
+          <div
+            id="breadcrumbs"
+            class="flex items-center space-x-2 px-6 py-2 overflow-x-auto whitespace-nowrap h-8"
+          >
+            <div id="breadcrumbs-path" class="flex items-center space-x-2">
+              <!-- Breadcrumbs will be inserted here -->
+            </div>
+          </div>
+          <div id="bookmarks" class="grid gap-6 p-6">
+            <!-- Bookmark cards will be inserted here -->
+          </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white w-full dark:marksforest-bg-gray-900">
+          <div
+            class="mx-auto px-6 py-6 md:flex md:items-center md:justify-between lg:px-8"
+          >
+            <div class="flex justify-center space-x-6 md:order-2">
+              <a
+                href="https://github.com/SJFCS/MarksForest"
+                target="_blank"
+                class="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 transition-colors duration-200"
+                aria-label="Visit our GitHub repository"
+              >
+                <span class="sr-only">GitHub</span>
+                <svg
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div class="mt-8 md:order-1 md:mt-0">
+              <p
+                class="text-center text-xs leading-5 text-gray-500 dark:text-gray-400 flex justify-center items-center"
+              >
+                &copy; <span id="currentYear"></span>&nbsp;Built with
+                <a
+                  class="text-green-600 hover:text-green-500 flex items-center ml-1"
+                  target="_blank"
+                >
+                  <svg
+                    width="10"
+                    height="12"
+                    viewBox="0 0 10 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="inline-block mr-1"
+                  >
+                    <g clip-path="url(#clip0_421_47774)">
+                      <path
+                        d="M4.27777 9.11133H6.6111V12.0002L5.44444 10.8783L4.27777 12.0002V9.11133Z"
+                        fill="#FCB11E"
+                      />
+                      <path
+                        d="M9.05557 5.72222L5.22223 0L1.3889 5.72222H2.68634L0.444458 9.11111H10L7.75813 5.72222H9.05557Z"
+                        fill="#2D9C6C"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_421_47774">
+                        <rect
+                          width="9.55556"
+                          height="12"
+                          fill="white"
+                          transform="translate(0.444458)"
+                        />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  MarksForest
+                </a>
+              </p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script>
+      // 清除导航栏的激活状态
+      function clearNavigationActiveState() {
+        document
+          .querySelectorAll(
+            "#navigation .nav-item, #mobile-navigation .nav-item"
+          )
+          .forEach((item) => {
+            // 移除所有可能的状态类
+            const classesToRemove = [
+              // 背景
+              "bg-gray-50",
+              "bg-gray-100",
+              "dark:bg-gray-800",
+              // 文字颜色
+              "text-gray-700",
+              "dark:text-gray-400",
+              "text-green-600",
+              "dark:text-green-500",
+            ];
+            item.classList.remove(...classesToRemove);
+            // 重置为默认状态
+            item.classList.add("text-gray-700", "dark:text-gray-400");
+          });
+      }
+
+      // 全局状态管理
+      const state = {
+        currentPath: [], // 当前路径，格式：[{title, children}]
+        expandedFolders: new Set(), // 展开的文件夹集合
+        bookmarkData: null, // 书签数据
+
+        // 更新当前路径
+        updatePath(path) {
+          this.currentPath = path;
+
+          // 展开路径上的所有文件夹
+          let currentFolderId = "";
+          for (const segment of path) {
+            currentFolderId = currentFolderId
+              ? currentFolderId + "/" + segment.title
+              : segment.title;
+            this.expandFolder(currentFolderId);
+          }
+
+          this.syncWithUrl(path);
+          uiManager.updateAll(path);
+        },
+
+        // 获取当前路径
+        getCurrentPath() {
+          return this.currentPath;
+        },
+
+        // 展开文件夹
+        expandFolder(folderId) {
+          this.expandedFolders.add(folderId);
+          uiManager.updateFolderState(folderId, true);
+        },
+
+        // 收起文件夹
+        collapseFolder(folderId) {
+          this.expandedFolders.delete(folderId);
+          uiManager.updateFolderState(folderId, false);
+        },
+
+        // 切换文件夹展开状态
+        toggleFolder(folderId) {
+          if (this.isFolderExpanded(folderId)) {
+            this.collapseFolder(folderId);
+          } else {
+            this.expandFolder(folderId);
+          }
+        },
+
+        // 检查文件夹是否展开
+        isFolderExpanded(folderId) {
+          return this.expandedFolders.has(folderId);
+        },
+
+        // 展开路径上的所有文件夹
+        expandPath(path) {
+          let currentPath = [];
+          for (const segment of path) {
+            currentPath.push(segment);
+            const folderId = currentPath.map((p) => p.title).join("/");
+            if (!this.isFolderExpanded(folderId)) {
+              this.expandFolder(folderId);
+            }
+          }
+        },
+
+        // 与 URL 同步
+        syncWithUrl(path) {
+          const url = this.pathToUrl(path);
+          window.history.pushState({ path }, "", url);
+        },
+
+        // 路径转 URL
+        pathToUrl(path) {
+          if (!path || path.length === 0) return "#";
+          return "#/" + path.map((p) => encodeURIComponent(p.title)).join("/");
+        },
+
+        // URL 转路径
+        urlToPath(url) {
+          // 移除开头的 # 和 /
+          return url
+            .replace(/^#\/?/, "")
+            .split("/")
+            .filter(Boolean)
+            .map(decodeURIComponent);
+        },
+
+        // 通过路径获取文件夹内容
+        getFolderByPath(path) {
+          let current = this.bookmarkData;
+          for (const segment of path) {
+            const folder = current.find(
+              (item) => item.type === "folder" && item.title === segment.title
+            );
+            if (!folder) return null;
+            current = folder.children;
+          }
+          return current;
+        },
+
+        // 验证路径是否有效
+        validatePath(urlPath) {
+          try {
+            let current = this.bookmarkData;
+            const validPath = [];
+            let currentFolderId = "";
+
+            for (const segment of urlPath) {
+              const found = current.find(
+                (item) => item.type === "folder" && item.title === segment
+              );
+              if (!found) return null;
+
+              // 构建并展开当前文件夹
+              currentFolderId = currentFolderId
+                ? currentFolderId + "/" + found.title
+                : found.title;
+              this.expandFolder(currentFolderId);
+
+              validPath.push({ title: found.title, children: found.children });
+              current = found.children;
+            }
+
+            return validPath;
+          } catch (err) {
+            console.error("Error validating path:", err);
+            return null;
+          }
+        },
+
+        // 初始化第一个文件夹
+        initializeFirstFolder() {
+          if (this.bookmarkData && this.bookmarkData.length > 0) {
+            const firstFolder = this.bookmarkData.find(
+              (item) => item.type === "folder"
+            );
+            if (firstFolder) {
+              const path = [
+                { title: firstFolder.title, children: firstFolder.children },
+              ];
+              this.updatePath(path);
+              this.expandFolder(firstFolder.title);
+              return;
+            }
+          }
+          this.updatePath([]);
+        },
+      };
+
+      // UI更新管理器
+      const uiManager = {
+        // 统一更新所有 UI 组件
+        updateAll(path) {
+          this.updateBreadcrumbs(path);
+          this.updateSidebarState(path);
+          const bookmarks =
+            path.length > 0
+              ? path[path.length - 1].children
+              : state.bookmarkData;
+          this.updateBookmarks(bookmarks, path);
+        },
+
+        // 更新面包屑导航
+        updateBreadcrumbs(path) {
+          renderBreadcrumbs(path);
+        },
+
+        // 更新侧边栏状态
+        updateSidebarState(path) {
+          // 清除激活样式
+          document
+            .querySelectorAll(
+              "#navigation .sidebar-active, #mobile-navigation .sidebar-active"
+            )
+            .forEach((el) => el.classList.remove("sidebar-active"));
+
+          // 设置新的活跃状态
+          if (path.length > 0) {
+            const currentFolder = path[path.length - 1].title;
+            const sidebarItems = document.querySelectorAll("#navigation li a");
+            sidebarItems.forEach((item) => {
+              if (item.innerText === currentFolder) {
+                item.parentElement.classList.add("sidebar-active");
+              }
+            });
+          }
+        },
+
+        // 更新文件夹展开状态
+        updateFolderState(folderId, isExpanded) {
+          const folderPath = folderId.split("/");
+
+          // 处理桌面端
+          this.updateFolderStateInElement(
+            document.getElementById("navigation"),
+            folderPath,
+            folderId,
+            isExpanded
+          );
+
+          // 处理移动端
+          this.updateFolderStateInElement(
+            document.getElementById("mobile-navigation"),
+            folderPath,
+            folderId,
+            isExpanded
+          );
+        },
+
+        updateFolderStateInElement(element, folderPath, folderId, isExpanded) {
+          if (!element) {
+            console.log("Element not found");
+            return;
+          }
+
+          clearNavigationActiveState();
+
+          let currentElement = element;
+          let currentPath = [];
+          const lastSegment = folderPath[folderPath.length - 1];
+
+          for (const segment of folderPath) {
+            currentPath.push(segment);
+            const currentId = currentPath.join("/");
+            const folderElements = currentElement.querySelectorAll("li");
+
+            for (const li of folderElements) {
+              const titleElements = li.querySelectorAll("a, span");
+
+              for (const titleElement of titleElements) {
+                const text = titleElement.textContent.trim();
+                if (text === segment) {
+                  // 只为最后一个文件夹添加激活样式
+                  if (segment === lastSegment) {
+                    const navItem = li.closest(".nav-item");
+                    if (navItem) {
+                      // 移除默认文字颜色
+                      navItem.classList.remove(
+                        "text-gray-700",
+                        "dark:text-gray-400"
+                      );
+                      // 添加激活样式
+                      navItem.classList.add(
+                        "bg-gray-50",
+                        "dark:bg-gray-800",
+                        "text-green-600",
+                        "dark:text-green-500"
+                      );
+                    }
+                  }
+
+                  const parentLi = li.closest("li");
+                  const subList = parentLi.nextElementSibling;
+                  const toggleIcon = li.querySelector(".transform");
+
+                  if (subList && subList.tagName === "UL") {
+                    // 只有当完全匹配目标文件夹时才更新状态
+                    if (currentId === folderId) {
+                      if (isExpanded) {
+                        subList.classList.remove("hidden");
+                        // 只有当有子文件夹时才旋转箭头
+                        if (toggleIcon && subList.children.length > 0) {
+                          toggleIcon.classList.add("rotate-90");
+                        }
+                      } else {
+                        subList.classList.add("hidden");
+                        // 只有当有子文件夹时才取消旋转箭头
+                        if (toggleIcon && subList.children.length > 0) {
+                          toggleIcon.classList.remove("rotate-90");
+                        }
+                      }
+                    }
+                    currentElement = subList;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        // 更新书签内容
+        updateBookmarks(bookmarks, path) {
+          renderBookmarks(bookmarks, path);
+        },
+      };
+
+      // 注册 Service Worker
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log(
+                "Service Worker 注册成功，作用域：",
+                registration.scope
+              );
+            })
+            .catch((error) => {
+              console.error("Service Worker 注册失败：", error);
+            });
+        });
+      }
+
+      // 移除重复的fetch调用，只在DOMContentLoaded中加载数据
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          // 显示加载动画
+          const loadingSpinner = document.getElementById("loading-spinner");
+          loadingSpinner.style.display = "flex";
+
+          // 加载数据
+          const data = await loadBookmarks();
+
+          // 渲染导航
+          const navigationContainer = document.getElementById("navigation");
+          renderNavigation(data, navigationContainer, true);
+
+          // 处理初始路径
+          const urlPath = state.urlToPath(window.location.hash);
+          if (urlPath.length > 0) {
+            const validPath = state.validatePath(urlPath);
+            if (validPath) {
+              state.updatePath(validPath);
+            } else {
+              state.initializeFirstFolder();
+            }
+          } else {
+            state.initializeFirstFolder();
+          }
+          // TODO
+          // 移动端侧边栏
+          // Load bookmark data
+          const initialHash = window.location.hash; // 保存初始路径
+
+          // Store data globally
+          window.marksForestData = data;
+
+          // 初始化界面
+          const container = document.getElementById("bookmarks");
+          if (container) {
+            container.innerHTML = "";
+          }
+
+          // 处理初始路径
+          if (initialHash && initialHash !== "#") {
+            const pathSegments = state.urlToPath(initialHash);
+            const validPath = state.validatePath(pathSegments);
+            if (validPath) {
+              state.updatePath(validPath);
+            } else {
+              state.initializeFirstFolder();
+            }
+          } else {
+            state.initializeFirstFolder();
+          }
+          // Dispatch data loaded event for mobile navigation
+          const event = new CustomEvent("marksforest-data-loaded", {
+            detail: { path: state.getCurrentPath() },
+          });
+          window.dispatchEvent(event);
+
+          // 初始化其他功能
+          initializeSearch();
+          initializeTheme();
+          initializeSidebar();
+
+          // 隐藏加载动画
+          loadingSpinner.style.display = "none";
+        } catch (error) {
+          console.error("Failed to initialize application:", error);
+          const loadingSpinner = document.getElementById("loading-spinner");
+          loadingSpinner.innerHTML =
+            '<div class="text-red-500">Failed to load data. Please try refreshing the page.</div>';
+        }
+      });
+
+      // 监听 hash 变化事件
+      window.addEventListener("hashchange", () => {
+        const urlPath = state.urlToPath(window.location.hash);
+        const validPath = state.validatePath(urlPath);
+        if (validPath) {
+          state.updatePath(validPath);
+        } else {
+          state.initializeFirstFolder();
+        }
+      });
+
+      // 加载书签数据
+      async function loadBookmarks() {
+        try {
+          const response = await fetch("json/marksforest.json");
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const rawData = await response.json();
+          // 处理书签数据
+          state.bookmarkData = processBookmarkData(rawData);
+          window.marksForestData = state.bookmarkData; // 同时保存到 window 对象，保持兼容性
+
+          // 初始化界面
+          const container = document.getElementById("bookmarks");
+          if (container) {
+            container.innerHTML = "";
+          }
+
+          // 处理初始路径
+          const initialHash = window.location.hash;
+          if (initialHash && initialHash !== "#") {
+            const pathSegments = state.urlToPath(initialHash);
+            const validPath = state.validatePath(pathSegments);
+            if (validPath) {
+              state.updatePath(validPath);
+            } else {
+              state.initializeFirstFolder();
+            }
+          } else {
+            state.initializeFirstFolder();
+          }
+
+          // 触发数据加载完成事件，传递当前路径信息
+          const event = new CustomEvent("marksforest-data-loaded", {
+            detail: { path: state.getCurrentPath() },
+          });
+          window.dispatchEvent(event);
+
+          // 初始化其他功能
+          initializeSearch();
+          initializeSidebar();
+
+          return state.bookmarkData;
+        } catch (error) {
+          console.error("Error loading bookmarks:", error);
+          throw error;
+        }
+      }
+
+      // 处理书签数据
+      function processBookmarkData(data) {
+        // 如果是数组，说明已经是处理过的格式
+        if (Array.isArray(data)) {
+          console.log("Processing array format");
+          return data.map((item) => processBookmarkItem(item)).filter(Boolean);
+        }
+
+        // 处理 Chrome 书签格式
+        if (data.roots) {
+          const processedData = [];
+
+          // Chrome 书签的三个主要目录
+          const rootFolders = {
+            bookmark_bar: "书签栏",
+            other: "其他书签",
+            synced: "移动设备书签",
+          };
+
+          // 处理每个根目录
+          for (const [key, title] of Object.entries(rootFolders)) {
+            const root = data.roots[key];
+            if (root && root.children) {
+              const folder = {
+                title: title,
+                type: "folder",
+                children: processChildren(root.children),
+              };
+              processedData.push(folder);
+            }
+          }
+
+          return processedData;
+        }
+
+        console.error("Unknown bookmark format:", data);
+        return [];
+      }
+
+      // 处理单个书签项
+      function processBookmarkItem(item) {
+        if (!item) {
+          console.warn("Received null/undefined item");
+          return null;
+        }
+
+        // 如果已经是正确的格式，递归处理子项
+        if (item.type === "folder" || item.type === "link") {
+          const processed = {
+            ...item,
+            title: item.title || item.name || "Untitled",
+            children: item.children
+              ? item.children
+                  .map((child) => processBookmarkItem(child))
+                  .filter(Boolean)
+              : [],
+          };
+          return processed;
+        }
+
+        // 处理 Chrome 书签格式
+        const processedItem = {
+          title: item.name || item.title || "Untitled",
+          type: item.url ? "link" : "folder",
+          dateAdded: item.date_added,
+          dateModified: item.date_modified,
+        };
+
+        if (processedItem.type === "link") {
+          processedItem.url = item.url;
+        } else {
+          processedItem.children = item.children
+            ? item.children
+                .map((child) => processBookmarkItem(child))
+                .filter(Boolean)
+            : [];
+        }
+
+        return processedItem;
+      }
+
+      // 处理子项
+      function processChildren(children) {
+        if (!Array.isArray(children)) {
+          console.warn("Children is not an array:", children);
+          return [];
+        }
+
+        const processed = children
+          .map((child) => processBookmarkItem(child))
+          .filter(Boolean);
+
+        return processed;
+      }
+
+      // 初始化搜索功能
+      function initializeSearch() {
+        // Search functionality on pressing Enter
+        document
+          .getElementById("searchInput")
+          .addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              const query = event.target.value;
+              searchBookmarks(query);
+            }
+          });
+
+        // 添加搜索按钮点击事件
+        document.getElementById("searchButton").onclick = function () {
+          const query = document.getElementById("searchInput").value;
+          searchBookmarks(query);
+        };
+      }
+
+      // 初始化主题功能
+      function initializeTheme() {
+        const prefersDarkTheme = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        if (prefersDarkTheme) {
+          applyDarkTheme();
+        } else {
+          applyLightTheme();
+        }
+      }
+
+      // 初始化侧边栏功能
+      function initializeSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("main-content");
+        const handle = document.getElementById("resize-handle");
+
+        if (handle && sidebar && mainContent) {
+          if (isDesktopMode()) {
+            restoreSavedWidth(false);
+          }
+        }
+      }
+
+      // Variables for sidebar elements
+      const openSidebarButton = document.getElementById("open-sidebar-button");
+      const closeSidebarButton = document.getElementById(
+        "close-sidebar-button"
+      );
+      const offCanvasMenu = document.getElementById("off-canvas-menu");
+      const offCanvasBackdrop = document.getElementById("off-canvas-backdrop");
+      const offCanvasContent = document.getElementById("off-canvas-content");
+
+      // Function to open the sidebar
+      const openSidebar = () => {
+        const offCanvasMenu = document.getElementById("off-canvas-menu");
+        const offCanvasBackdrop = document.getElementById(
+          "off-canvas-backdrop"
+        );
+        const offCanvasContent = document.getElementById("off-canvas-content");
+
+        // Show the menu
+        offCanvasMenu.classList.remove("hidden");
+
+        // Animate backdrop and content after a small delay
+        requestAnimationFrame(() => {
+          offCanvasBackdrop.classList.remove("opacity-0");
+          offCanvasContent.classList.remove("-translate-x-full");
+        });
+      };
+
+      // Function to close the sidebar
+      const closeSidebar = () => {
+        const offCanvasMenu = document.getElementById("off-canvas-menu");
+        const offCanvasBackdrop = document.getElementById(
+          "off-canvas-backdrop"
+        );
+        const offCanvasContent = document.getElementById("off-canvas-content");
+
+        // Animate backdrop and content
+        offCanvasBackdrop.classList.add("opacity-0");
+        offCanvasContent.classList.add("-translate-x-full");
+
+        // Hide the menu after animation
+        setTimeout(() => {
+          offCanvasMenu.classList.add("hidden");
+        }, 300);
+      };
+
+      // Event listeners for open and close buttons
+      openSidebarButton.addEventListener("click", openSidebar);
+      closeSidebarButton.addEventListener("click", closeSidebar);
+      offCanvasBackdrop.addEventListener("click", closeSidebar); // Close sidebar when clicking on the backdrop
+
+      // Search functionality
+      function searchInData(data, query, parentPath = []) {
+        let results = [];
+        data.forEach((item) => {
+          const currentPath = [...parentPath];
+          const itemInfo = {
+            title: item.title,
+            type: item.type,
+            children: item.children,
+          };
+          currentPath.push(itemInfo);
+
+          if (item.title.toLowerCase().includes(query.toLowerCase())) {
+            results.push({
+              ...item,
+              parentPath: currentPath.slice(0, -1), // 不包含当前项
+              fullPath: currentPath, // 包含当前项的完整路径
+            });
+          }
+
+          if (item.children) {
+            const childResults = searchInData(
+              item.children,
+              query,
+              currentPath
+            );
+            results = results.concat(childResults);
+          }
+        });
+        return results;
+      }
+
+      function searchBookmarks(query) {
+        if (!query.trim()) {
+          const currentPath = state.getCurrentPath();
+          const currentFolder =
+            currentPath.length > 0 ? currentPath[currentPath.length - 1] : null;
+          renderBookmarks(
+            currentFolder ? currentFolder.children : state.bookmarkData,
+            currentPath
+          );
+          return;
+        }
+
+        const results = searchInData(state.bookmarkData, query.toLowerCase());
+        if (results.length === 0) {
+          showNoResultsMessage();
+          return;
+        }
+
+        renderBookmarks(results, [
+          { title: "Search Results", children: results },
+        ]);
+      }
+
+      // Create bookmark card element
+      function createCard(title, url, parentPath) {
+        const card = document.createElement("div");
+        card.className =
+          "cursor-pointer flex items-center hover:shadow-sm transition-all p-4 bg-white shadow-sm ring-1 ring-gray-900/5 dark:marksforest-ring-gray-800 rounded-lg hover:bg-gray-100 dark:marksforest-bg-gray-900 dark:hover:marksforest-bg-gray-800 group active:scale-[0.99] active:bg-gray-200 dark:active:marksforest-bg-gray-700 transform-gpu opacity-0 translate-y-4 duration-400 ease-out";
+        card.setAttribute("data-url", url);
+
+        card.onclick = () => window.open(url, "_blank");
+
+        const cardIcon = document.createElement("img");
+        cardIcon.alt = title;
+        cardIcon.className =
+          "w-8 h-8 mr-4 rounded-full flex-shrink-0 card-icon-bg";
+        cardIcon.src = "assets/default-icon.svg"; // 默认使用默认图标
+
+        // 创建一个新的Image对象来预加载远程图标
+        const remoteIcon = new Image();
+        remoteIcon.onload = function () {
+          cardIcon.src = this.src; // 远程图标加载成功后替换
+        };
+
+        // 尝试加载远程图标
+        // remoteIcon.src = `https://favicon.im/${new URL(url).hostname}?larger=true`; //效果不好
+        // remoteIcon.src = `https://logo.clearbit.com/${new URL(url).hostname}`; //废弃 api
+        remoteIcon.src = `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=128`;
+        // 远程图标加载失败时保持默认图标
+        remoteIcon.onerror = function () {
+          cardIcon.src = "assets/default-icon.svg";
+        };
+        const cardContent = document.createElement("div");
+        cardContent.className = "flex flex-col overflow-hidden flex-1";
+
+        const cardTitle = document.createElement("h2");
+        cardTitle.className =
+          "text-sm font-semibold mb-1 truncate dark:text-gray-400";
+        cardTitle.innerText = title;
+
+        const cleanUrl = url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+        const cardUrl = document.createElement("p");
+        cardUrl.className =
+          "text-xs text-gray-400 hover:text-black dark:text-gray-600 dark:hover:text-gray-400 truncate";
+        cardUrl.innerText = cleanUrl;
+
+        cardContent.appendChild(cardTitle);
+        cardContent.appendChild(cardUrl);
+
+        // 创建按钮组容器
+        const buttonGroup = document.createElement("div");
+        buttonGroup.className =
+          "flex items-center gap-1 opacity-0 group-hover:opacity-100 ml-2";
+
+        // 添加定位按钮（如果有父路径）
+        if (parentPath && parentPath.length > 0) {
+          const locateButton = document.createElement("button");
+          locateButton.className =
+            "p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer";
+          //locateButton.title = "定位到所在文件夹";
+          locateButton.innerHTML = `
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h7a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+            </svg>`;
+
+          locateButton.onclick = (e) => {
+            e.stopPropagation();
+            state.updatePath(parentPath);
+            let currentFolderId = "";
+            parentPath.forEach((segment) => {
+              currentFolderId = currentFolderId
+                ? currentFolderId + "/" + segment.title
+                : segment.title;
+              state.expandFolder(currentFolderId);
+            });
+
+            // 等待DOM更新完成后查找并高亮目标卡片
+            setTimeout(() => {
+              const targetCard = document.querySelector(`[data-url="${url}"]`);
+              if (targetCard) {
+                targetCard.classList.add("highlight-border");
+                // 动画结束后移除类
+                setTimeout(() => {
+                  targetCard.classList.remove("highlight-border");
+                }, 2100); // 动画持续2.1秒 (0.7s * 3)
+              }
+            }, 100); // 给予足够时间让DOM更新完成
+          };
+          buttonGroup.appendChild(locateButton);
+        }
+
+        // 添加复制按钮（在大屏幕上显示）
+        const copyButton = document.createElement("button");
+        copyButton.className =
+          "p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer hidden lg:block";
+        copyButton.innerHTML = `
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>`;
+
+        copyButton.onclick = async (e) => {
+          e.stopPropagation();
+          try {
+            await navigator.clipboard.writeText(url);
+            copyButton.innerHTML = `
+              <svg class="h-4 w-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>`;
+            setTimeout(() => {
+              copyButton.innerHTML = `
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>`;
+            }, 1000);
+          } catch (err) {
+            console.error("复制失败:", err);
+          }
+        };
+        buttonGroup.appendChild(copyButton);
+
+        card.appendChild(cardIcon);
+        card.appendChild(cardContent);
+        card.appendChild(buttonGroup);
+
+        // 添加到观察列表
+        const cardObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // 元素进入视口时，添加动画效果
+                requestAnimationFrame(() => {
+                  entry.target.classList.remove("opacity-0", "translate-y-4");
+                });
+                // 动画触发后就不再观察
+                cardObserver.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            root: null, // 使用视口作为根
+            rootMargin: "50px", // 提前 50px 开始加载
+            threshold: 0.1, // 元素 10% 可见时触发
+          }
+        );
+        cardObserver.observe(card);
+
+        return card;
+      }
+
+      // Create folder card element
+      function createFolderCard(title, folder, path) {
+        const card = document.createElement("div");
+        card.className =
+          "folder-card text-gray rounded-lg cursor-pointer flex flex-col items-center";
+
+        const folderInfo = folder.fullPath
+          ? {
+              ...folder,
+              title: title,
+              children: folder.children || folder,
+            }
+          : {
+              title: title,
+              children: folder.children || folder,
+              parentPath: path,
+            };
+
+        card.onclick = () => {
+          if (folderInfo.fullPath) {
+            const fullPath = folderInfo.fullPath;
+
+            state.updatePath(fullPath);
+
+            let currentPath = "";
+            fullPath.forEach((segment) => {
+              currentPath = currentPath
+                ? currentPath + "/" + segment.title
+                : segment.title;
+              state.expandFolder(currentPath);
+            });
+
+            const navigationContainer = document.getElementById("navigation");
+            renderNavigation(
+              state.bookmarkData,
+              navigationContainer,
+              false,
+              []
+            );
+            updateSidebarActiveState(fullPath);
+
+            renderBookmarks(folderInfo.children, fullPath);
+          } else {
+            handleFolderClick(folderInfo, path);
+          }
+        };
+
+        const cardIcon = document.createElement("div");
+        cardIcon.innerHTML = `
+        <svg viewBox="0 0 100 80" class="folder__svg rounded-lg">
+          <rect x="0" y="0" rx="10" ry="10" width="100" height="80" class="folder__back" />
+          <rect x="15" y="8" rx="10" ry="10" width="70" height="60" class="paper-1" />
+          <rect x="10" y="18" rx="10" ry="10" width="80" height="50" class="paper-2" />
+          <rect x="0" y="10" rx="10" ry="10" width="100" height="70" class="folder__front" />
+          <rect x="0" y="10" rx="10" ry="10" width="100" height="70" class="folder__front right" />
+        </svg>
+      `;
+        cardIcon.className = "mb-2";
+
+        const cardTitle = document.createElement("h2");
+        cardTitle.className =
+          "text-xs font-normal text-center w-full truncate dark:text-gray-400";
+        cardTitle.innerText = title;
+
+        card.appendChild(cardIcon);
+        card.appendChild(cardTitle);
+
+        return card;
+      }
+
+      // 通用的文件夹点击处理函数
+      function handleFolderClick(folderInfo, path, clickedNavItem = null) {
+        if (!folderInfo || !folderInfo.children) return;
+
+        const newPath = path.concat({
+          title: folderInfo.title,
+          children: folderInfo.children,
+        });
+
+        // 处理移动导航的展开/收起
+        if (clickedNavItem) {
+          const subList = clickedNavItem.nextElementSibling;
+          const toggleIcon = clickedNavItem.querySelector(".transform");
+
+          if (
+            subList &&
+            subList.tagName.toLowerCase() === "ul" &&
+            subList.children.length > 0
+          ) {
+            const isHidden = subList.classList.contains("hidden");
+
+            // 添加过渡效果
+            if (isHidden) {
+              // 展开
+              subList.style.maxHeight = "0px";
+              subList.classList.remove("hidden");
+              requestAnimationFrame(() => {
+                subList.style.maxHeight = subList.scrollHeight + "px";
+                if (toggleIcon) toggleIcon.classList.add("rotate-90");
+              });
+
+              // 清理maxHeight
+              setTimeout(() => {
+                subList.style.maxHeight = "";
+              }, 200);
+            } else {
+              // 收起
+              subList.style.maxHeight = subList.scrollHeight + "px";
+              requestAnimationFrame(() => {
+                subList.style.maxHeight = "0px";
+                if (toggleIcon) toggleIcon.classList.remove("rotate-90");
+              });
+
+              // 隐藏并清理maxHeight
+              setTimeout(() => {
+                subList.classList.add("hidden");
+                subList.style.maxHeight = "";
+              }, 200);
+            }
+          }
+        }
+
+        // 检查是否是当前激活的路径
+        const currentPath = state.getCurrentPath();
+        const isSamePath =
+          currentPath.length === newPath.length &&
+          currentPath.every(
+            (item, index) => item.title === newPath[index].title
+          );
+
+        // 只有在路径不同时才更新路径和渲染书签
+        if (!isSamePath) {
+          state.updatePath(newPath);
+        }
+      }
+
+      // Render sidebar navigation
+      function renderNavigation(
+        folders,
+        container,
+        isFirstRender = false,
+        path = []
+      ) {
+        container.innerHTML = ""; // Clear previous content
+        const fragment = document.createDocumentFragment();
+
+        folders.forEach((folder, index) => {
+          if (folder.type === "folder") {
+            const folderId = path
+              .map((p) => p.title)
+              .concat(folder.title)
+              .join("/");
+
+            const navItem = document.createElement("li");
+            navItem.className =
+              "nav-item items-center group flex justify-between gap-x-3 rounded-md p-2 text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors duration-200";
+
+            const navLinkContainer = document.createElement("div");
+            navLinkContainer.className =
+              "flex items-center space-x-2 truncate flex-1 min-w-0";
+
+            const folderIcon = document.createElement("span");
+            folderIcon.innerHTML =
+              '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h4l2 2h7a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" /></svg>';
+            const navLink = document.createElement("a");
+            navLink.className = "flex text-sm leading-6 font-semibold";
+            navLink.innerText = folder.title;
+
+            navLinkContainer.appendChild(folderIcon);
+            navLinkContainer.appendChild(navLink);
+            navItem.appendChild(navLinkContainer);
+
+            // 检查是否有子文件夹
+            const hasSubfolders =
+              folder.children &&
+              folder.children.some((child) => child.type === "folder");
+
+            if (hasSubfolders) {
+              // 添加箭头图标
+              const toggleIcon = document.createElement("span");
+              toggleIcon.className = "transform transition-transform";
+              toggleIcon.innerHTML =
+                '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>';
+              navItem.appendChild(toggleIcon);
+
+              const subList = document.createElement("ul");
+              subList.className =
+                "ml-4 space-y-1 hidden mt-1 overflow-hidden transition-all duration-200";
+
+              // 渲染侧边栏文件夹列表
+              renderNavigation(
+                folder.children,
+                subList,
+                false,
+                path.concat({ title: folder.title, children: folder.children })
+              );
+              fragment.appendChild(navItem);
+              fragment.appendChild(subList);
+
+              if (isFirstRender && index === 0) {
+                subList.classList.remove("hidden");
+                const toggleIcon = navItem.querySelector(".transform");
+                if (toggleIcon && subList.children.length > 0) {
+                  toggleIcon.classList.add("rotate-90");
+                }
+                state.expandFolder(folderId);
+              }
+            } else {
+              fragment.appendChild(navItem);
+            }
+
+            // 使用事件委托来处理点击事件
+            navItem.dataset.folderId = folderId;
+          }
+        });
+
+        // 一次性添加所有元素
+        container.appendChild(fragment);
+
+        // 如果还没有添加过事件监听器，添加事件委托
+        if (!container.hasAttribute("data-has-click-listener")) {
+          container.setAttribute("data-has-click-listener", "true");
+          container.addEventListener("click", (e) => {
+            const navItem = e.target.closest(".nav-item");
+            if (navItem) {
+              e.stopPropagation();
+              const folderId = navItem.dataset.folderId;
+              const folder = folders.find(
+                (f) =>
+                  path
+                    .map((p) => p.title)
+                    .concat(f.title)
+                    .join("/") === folderId
+              );
+              if (folder) {
+                handleFolderClick(folder, path, navItem);
+              }
+            }
+          });
+        }
+      }
+
+      // Render breadcrumbs for navigation
+      function renderBreadcrumbs(path) {
+        const breadcrumbsPath = document.getElementById("breadcrumbs-path");
+        breadcrumbsPath.innerHTML = ""; // Clear previous breadcrumbs
+        breadcrumbsPath.className =
+          "flex items-center gap-2 overflow-x-auto max-w-full";
+
+        const homeLink = document.createElement("a");
+        homeLink.href = "#";
+        homeLink.className =
+          "flex items-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300";
+        homeLink.innerHTML =
+          '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>';
+        homeLink.onclick = (e) => {
+          e.preventDefault();
+          state.expandedFolders.clear();
+          state.updatePath([]);
+          renderBookmarks(state.bookmarkData, []);
+          updateSidebarActiveState([]);
+          const navigationContainer = document.getElementById("navigation");
+          renderNavigation(state.bookmarkData, navigationContainer, false, []);
+        };
+        breadcrumbsPath.appendChild(homeLink);
+
+        path.forEach((item, index) => {
+          const separator = document.createElement("span");
+          separator.className = "text-gray-400 dark:text-gray-500";
+          separator.innerHTML =
+            '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>';
+          breadcrumbsPath.appendChild(separator);
+
+          const breadcrumb = document.createElement("a");
+          breadcrumb.href = "#";
+          breadcrumb.className =
+            "text-sm hover:text-gray-700 dark:hover:text-gray-300" +
+            (index === path.length - 1
+              ? " text-gray-600 dark:text-gray-300 font-medium"
+              : " text-gray-500 dark:text-gray-400");
+          breadcrumb.innerText = item.title;
+          breadcrumb.onclick = (e) => {
+            e.preventDefault();
+            const newPath = path.slice(0, index + 1);
+            state.updatePath(newPath);
+            const currentItem = newPath[newPath.length - 1];
+            renderBookmarks(currentItem.children, newPath);
+            updateSidebarActiveState(newPath);
+          };
+
+          breadcrumbsPath.appendChild(breadcrumb);
+        });
+      }
+
+      // Update the active state of sidebar items
+      function updateSidebarActiveState(path) {
+        // 清除桌面端和移动端的激活状态
+        document
+          .querySelectorAll(
+            "#navigation .sidebar-active, #mobile-navigation .sidebar-active"
+          )
+          .forEach((el) => el.classList.remove("sidebar-active"));
+
+        // 处理桌面端导航
+        let currentNav = document.getElementById("navigation");
+        path.forEach((item, index) => {
+          const items = currentNav.querySelectorAll("li");
+          items.forEach((navItem) => {
+            const navLink = navItem.querySelector("a");
+            if (navLink && navLink.innerText === item.title) {
+              if (index === path.length - 1) {
+                navItem.classList.add("sidebar-active");
+              }
+
+              if (index < path.length - 1) {
+                const subList = navItem.nextElementSibling;
+                if (subList && subList.tagName === "UL") {
+                  subList.classList.remove("hidden");
+                  currentNav = subList;
+                }
+              }
+            }
+          });
+        });
+
+        // 处理移动端导航
+        currentNav = document.getElementById("mobile-navigation");
+        if (currentNav && path.length > 0) {
+          // 展开路径上的所有文件夹
+          path.forEach((item, index) => {
+            const items = currentNav.querySelectorAll("li");
+            items.forEach((navItem) => {
+              const navLink = navItem.querySelector("a");
+              if (navLink && navLink.innerText === item.title) {
+                if (index === path.length - 1) {
+                  navItem.classList.add("sidebar-active");
+                }
+
+                if (index < path.length - 1) {
+                  const subList = navItem.nextElementSibling;
+                  if (subList && subList.tagName === "UL") {
+                    subList.classList.remove("hidden");
+                    const toggleIcon = navItem.querySelector(".transform");
+                    if (toggleIcon) {
+                      toggleIcon.classList.add("rotate-90");
+                    }
+                  }
+                }
+              }
+            });
+          });
+        }
+      }
+
+      // Show a message when no search results are found
+      function showNoResultsMessage() {
+        const container = document.getElementById("bookmarks");
+        container.innerHTML = ""; // Clear previous content
+
+        const messageContainer = document.createElement("div");
+        messageContainer.className =
+          "flex flex-col items-center justify-center h-full";
+
+        const icon = document.createElement("svg");
+        icon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        icon.setAttribute("class", "h-16 w-16 text-gray-500");
+        icon.setAttribute("fill", "none");
+        icon.setAttribute("viewBox", "0 0 24 24");
+        icon.setAttribute("stroke", "currentColor");
+        icon.innerHTML =
+          '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m9-3a9 9 0 11-18 0 9 9 0 0118 0z" />';
+
+        const title = document.createElement("h2");
+        title.className = "text-gray-500 text-xl font-semibold mt-4";
+        title.innerText = "Oops, Nothing to See Here!";
+
+        const message = document.createElement("p");
+        message.className = "text-gray-500 mt-2";
+        message.innerText =
+          "Try another search or discover more cool stuff elsewhere!";
+
+        messageContainer.appendChild(icon);
+        messageContainer.appendChild(title);
+        messageContainer.appendChild(message);
+
+        container.appendChild(messageContainer);
+      }
+
+      // Render bookmarks
+      function renderBookmarks(data, path) {
+        const container = document.getElementById("bookmarks");
+        if (!container) return;
+
+        container.innerHTML = ""; // Clear previous content
+
+        // Validate data
+        if (!data || !Array.isArray(data)) {
+          container.innerHTML =
+            '<div class="text-center p-4 text-gray-500">No bookmarks available.</div>';
+          return;
+        }
+
+        renderBreadcrumbs(path);
+
+        const folders =
+          data.filter((item) => item && item.type === "folder") || [];
+        const links = data.filter((item) => item && item.type === "link") || [];
+
+        if (folders.length === 0 && links.length === 0) {
+          showNoResultsMessage();
+          return;
+        }
+
+        if (folders.length > 0) {
+          const folderSection = document.createElement("div");
+          folderSection.className =
+            "grid grid-cols-[repeat(auto-fill,minmax(6rem,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-2 sm:gap-4 justify-start px-2 sm:px-4";
+          folders.forEach((folder) => {
+            try {
+              const card = createFolderCard(folder.title, folder, path);
+              folderSection.appendChild(card);
+            } catch (error) {
+              console.error("Error creating folder card:", error);
+            }
+          });
+          container.appendChild(folderSection);
+        }
+
+        if (folders.length > 0 && links.length > 0) {
+          const separator = document.createElement("hr");
+          separator.className =
+            "my-1 border-t-1 border-gray-200 dark:marksforest-border-gray-800";
+          container.appendChild(separator);
+        }
+
+        if (links.length > 0) {
+          const linkSection = document.createElement("div");
+          linkSection.className =
+            "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4";
+          links.forEach((link) => {
+            try {
+              const card = createCard(link.title, link.url, link.parentPath);
+              linkSection.appendChild(card);
+            } catch (error) {
+              console.error("Error creating link card:", error);
+            }
+          });
+          container.appendChild(linkSection);
+        }
+
+        try {
+          updateSidebarActiveState(path);
+        } catch (error) {
+          console.error("Error updating sidebar state:", error);
+        }
+      }
+
+      // Theme toggle functionality
+      const themeToggleButton = document.getElementById("themeToggleButton");
+      const sunIcon = document.getElementById("sunIcon");
+      const moonIcon = document.getElementById("moonIcon");
+
+      function applyDarkTheme() {
+        document.documentElement.classList.add("dark");
+        sunIcon.classList.add("hidden");
+        moonIcon.classList.remove("hidden");
+        localStorage.setItem("theme", "dark");
+      }
+
+      function applyLightTheme() {
+        document.documentElement.classList.remove("dark");
+        sunIcon.classList.remove("hidden");
+        moonIcon.classList.add("hidden");
+        localStorage.setItem("theme", "light");
+      }
+
+      function toggleTheme() {
+        if (document.documentElement.classList.contains("dark")) {
+          applyLightTheme();
+        } else {
+          applyDarkTheme();
+        }
+      }
+
+      themeToggleButton.addEventListener("click", toggleTheme);
+
+      // 主题初始化
+      function initializeTheme() {
+        // 获取保存的主题
+        const savedTheme = localStorage.getItem("theme");
+
+        if (savedTheme) {
+          // 如果有保存的主题设置，使用保存的设置
+          savedTheme === "dark" ? applyDarkTheme() : applyLightTheme();
+        } else {
+          // 否则跟随系统设置
+          const prefersDarkTheme = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
+          prefersDarkTheme ? applyDarkTheme() : applyLightTheme();
+        }
+
+        // 监听系统主题变化
+        window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .addEventListener("change", (e) => {
+            // 只有在没有保存的主题设置时才跟随系统
+            if (!localStorage.getItem("theme")) {
+              e.matches ? applyDarkTheme() : applyLightTheme();
+            }
+          });
+      }
+
+      // 初始化主题
+      initializeTheme();
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        const handle = document.getElementById("resize-handle");
+        const sidebar = document.querySelector(".lg\\:fixed");
+        const mainContent = document.querySelector(".lg\\:pl-60");
+        let isResizing = false;
+        const MIN_WIDTH = 240;
+        const MAX_WIDTH = 500;
+        const DEFAULT_WIDTH = 240;
+
+        const isDesktopMode = () => window.innerWidth >= 1024;
+
+        const addTransition = () => {
+          sidebar.style.transition = "width 0.2s ease";
+          mainContent.style.transition = "padding-left 0.2s ease";
+        };
+
+        const removeTransition = () => {
+          sidebar.style.transition = "none";
+          mainContent.style.transition = "none";
+        };
+
+        const resetToDefault = () => {
+          removeTransition();
+          requestAnimationFrame(() => {
+            sidebar.style.removeProperty("width");
+            mainContent.style.removeProperty("padding-left");
+            sidebar.classList.add("lg:w-60");
+            requestAnimationFrame(() => {
+              addTransition();
+            });
+          });
+        };
+
+        const setCustomWidth = (width, withTransition = true) => {
+          if (width >= MIN_WIDTH && width <= MAX_WIDTH) {
+            if (!withTransition) removeTransition();
+            requestAnimationFrame(() => {
+              sidebar.classList.remove("lg:w-60");
+              sidebar.style.width = `${width}px`;
+              mainContent.style.paddingLeft = `${width}px`;
+              if (!withTransition) {
+                requestAnimationFrame(() => {
+                  addTransition();
+                });
+              }
+              if (isDesktopMode()) {
+                localStorage.setItem("sidebarWidth", width);
+              }
+            });
+          }
+        };
+
+        const restoreSavedWidth = (withTransition = true) => {
+          const savedWidth = localStorage.getItem("sidebarWidth");
+          if (savedWidth) {
+            const width = parseInt(savedWidth);
+            if (width >= MIN_WIDTH && width <= MAX_WIDTH) {
+              setCustomWidth(width, withTransition);
+            } else {
+              resetToDefault();
+            }
+          } else {
+            resetToDefault();
+          }
+        };
+
+        if (handle && sidebar && mainContent) {
+          if (isDesktopMode()) {
+            restoreSavedWidth(false);
+          }
+
+          handle.addEventListener("mousedown", function (e) {
+            if (!isDesktopMode()) return;
+            e.preventDefault();
+            isResizing = true;
+            removeTransition();
+            document.body.classList.add("resizing");
+
+            const onMouseMove = (e) => {
+              if (!isResizing) return;
+              requestAnimationFrame(() => {
+                const newWidth = Math.min(
+                  Math.max(e.clientX, MIN_WIDTH),
+                  MAX_WIDTH
+                );
+                setCustomWidth(newWidth, false);
+              });
+            };
+
+            const onMouseUp = () => {
+              isResizing = false;
+              document.body.classList.remove("resizing");
+              addTransition();
+              document.removeEventListener("mousemove", onMouseMove);
+              document.removeEventListener("mouseup", onMouseUp);
+            };
+
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+          });
+
+          let lastWidth = window.innerWidth;
+          let resizeRAF;
+
+          window.addEventListener("resize", () => {
+            if (resizeRAF) {
+              cancelAnimationFrame(resizeRAF);
+            }
+
+            resizeRAF = requestAnimationFrame(() => {
+              const currentWidth = window.innerWidth;
+              const crossingBreakpoint =
+                (lastWidth < 1024 && currentWidth >= 1024) ||
+                (lastWidth >= 1024 && currentWidth < 1024);
+
+              if (crossingBreakpoint) {
+                if (currentWidth >= 1024) {
+                  restoreSavedWidth(true);
+                } else {
+                  resetToDefault();
+                }
+              }
+
+              lastWidth = currentWidth;
+            });
+          });
+
+          addTransition();
+        }
+      });
+
+      // Handle mobile navigation
+      function initializeMobileNavigation() {
+        const mobileNavigation = document.getElementById("mobile-navigation");
+
+        // Clone desktop navigation items to mobile
+        function updateMobileNavigation(path = []) {
+          if (!mobileNavigation) return;
+
+          // Clear existing content
+          mobileNavigation.innerHTML = "";
+
+          // Create root container
+          const rootList = document.createElement("ul");
+          rootList.className = "space-y-1";
+          mobileNavigation.appendChild(rootList);
+
+          // Get the bookmark data
+          const bookmarkData = state.bookmarkData; // 使用 state 中的数据而不是 window 对象
+          if (!bookmarkData || !Array.isArray(bookmarkData)) {
+            mobileNavigation.innerHTML =
+              '<div class="text-center p-4 text-gray-500">No bookmarks available</div>';
+            return;
+          }
+
+          // Render the navigation tree
+          renderNavigation(bookmarkData, rootList, true);
+
+          // 同步当前路径的激活状态
+          if (path && path.length > 0) {
+            // 展开路径上的所有文件夹
+            path.forEach((item, index) => {
+              const items = rootList.querySelectorAll("li");
+              items.forEach((navItem) => {
+                const navLink = navItem.querySelector("a");
+                if (navLink && navLink.innerText === item.title) {
+                  if (index === path.length - 1) {
+                    navItem.classList.add("sidebar-active");
+                  }
+                  const subList = navItem.nextElementSibling;
+                  if (subList && subList.tagName === "UL") {
+                    subList.classList.remove("hidden");
+                    const toggleIcon = navItem.querySelector(".transform");
+                    if (toggleIcon) {
+                      toggleIcon.classList.add("rotate-90");
+                    }
+                  }
+                }
+              });
+            });
+          } else {
+            // 如果没有路径，展开第一个文件夹
+            const firstFolder = rootList.querySelector(".nav-item");
+            if (firstFolder) {
+              const subList = firstFolder.nextElementSibling;
+              if (subList && subList.tagName === "UL") {
+                subList.classList.remove("hidden");
+                const toggleIcon = firstFolder.querySelector(".transform");
+                if (toggleIcon) {
+                  toggleIcon.classList.add("rotate-90");
+                }
+              }
+            }
+          }
+        }
+
+        // 监听数据加载完成事件
+        window.addEventListener("marksforest-data-loaded", (event) => {
+          const path = event.detail ? event.detail.path : [];
+          updateMobileNavigation(path);
+        });
+
+        // 监听路径变化事件
+        window.addEventListener("marksforest-path-updated", (event) => {
+          const path = event.detail ? event.detail.path : [];
+          updateMobileNavigation(path);
+        });
+      }
+
+      // Initialize mobile navigation after data is loaded
+      window.addEventListener(
+        "marksforest-data-loaded",
+        initializeMobileNavigation
+      );
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const yearElement = document.getElementById("currentYear");
+        const currentYear = new Date().getFullYear();
+        yearElement.textContent = currentYear;
+      });
+    </script>
+  </body>
+</html>
